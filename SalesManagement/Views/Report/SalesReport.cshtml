@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Kategoriye Göre Satış Raporu";
+}
+
+<h2>Kategoriye Göre Satış Raporu</h2>
+
+<div class="row mb-3">
+    <div class="col-md-3">
+        <label class="form-label">Başlangıç Tarihi</label>
+        <input type="date" id="startDate" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Bitiş Tarihi</label>
+        <input type="date" id="endDate" class="form-control" />
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-primary w-100" onclick="filterReport()">Filtrele</button>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-secondary w-100" onclick="clearFilter()">Temizle</button>
+    </div>
+</div>
+
+<div id="salesReportGrid"></div>
+
+@section Scripts {
+    <script>
+        var grid = null;
+
+        // Verilen tarih parametrelerine göre yeni bir DevExtreme store üretir
+        function buildStore(startDate, endDate) {
+            return DevExpress.data.AspNet.createStore({
+                key: "Id",
+                loadUrl: "/Report/GetSalesReport",
+                loadParams: { startDate: startDate, endDate: endDate }
+            });
+        }
+
+        $(function () {
+            // Grid'i yalnızca bir kez oluştur; sonraki filtrelemelerde sadece dataSource güncellenecek
+            grid = $("#salesReportGrid").dxDataGrid({
+                dataSource: buildStore(null, null),
+                columns: [
+                    { dataField: "CategoryName", caption: "Kategori" },
+                    { dataField: "ProductName", caption: "Ürün" },
+                    { dataField: "CustomerName", caption: "Müşteri" },
+                    { dataField: "Quantity", caption: "Miktar" },
+                    { dataField: "SalesPrice", caption: "Satış Fiyatı" },
+                    { dataField: "DiscountRate", caption: "İskonto %" },
+                    { dataField: "TotalQuantity", caption: "Toplam Satış" },
+                    { dataField: "Date", caption: "Tarih", dataType: "date" }
+                ],
+                paging: { pageSize: 15 },
+                searchPanel: { visible: true },
+                filterRow: { visible: true },
+                headerFilter: { visible: true }
+            }).dxDataGrid("instance");
+        });
+
+        // Tarih değişikliğinde grid'i yeniden oluşturmak yerine yalnızca veri kaynağını değiştir
+        function loadGrid(startDate, endDate) {
+            if (!grid) return;
+            grid.option("dataSource", buildStore(startDate, endDate));
+        }
+
+        function filterReport() {
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            loadGrid(startDate, endDate);
+        }
+
+        function clearFilter() {
+            $("#startDate").val("");
+            $("#endDate").val("");
+            loadGrid(null, null);
+        }
+    </script>
+}

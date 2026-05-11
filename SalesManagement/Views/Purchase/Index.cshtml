@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Satın Alımlar";
+}
+
+<h2>Satın Alım Listesi</h2>
+<a href="/Purchase/Create" class="btn btn-primary mb-3">+ Yeni Satın Alım</a>
+
+@(Html.DevExtreme().DataGrid<SalesManagement.ViewModels.PurchaseViewModel>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Purchase")
+        .LoadAction("GetPurchases")
+        .Key("Id")
+    )
+    .Columns(columns => {
+        columns.Add().DataField("Id").Caption("ID").Width(60);
+        columns.Add().DataField("CustomerName").Caption("Tedarikçi");
+        columns.Add().DataField("ProductName").Caption("Ürün");
+        columns.Add().DataField("Quantity").Caption("Miktar");
+        columns.Add().DataField("Price").Caption("Alım Fiyatı");
+        columns.Add().DataField("Amount").Caption("Tutar");
+        columns.Add().DataField("Date").Caption("Tarih").DataType(GridColumnDataType.Date);
+    })
+    .Paging(p => p.PageSize(15))
+    .SearchPanel(s => s.Visible(true))
+    .FilterRow(f => f.Visible(true))
+    .HeaderFilter(h => h.Visible(true))
+)

@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Satışlar";
+}
+
+<h2>Satış Listesi</h2>
+<a href="/Sales/Create" class="btn btn-primary mb-3">+ Yeni Satış</a>
+
+@(Html.DevExtreme().DataGrid<SalesManagement.ViewModels.SalesViewModel>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Sales")
+        .LoadAction("GetSales")
+        .Key("Id")
+    )
+    .Columns(columns => {
+        columns.Add().DataField("Id").Caption("ID").Width(60);
+        columns.Add().DataField("CustomerName").Caption("Müşteri");
+        columns.Add().DataField("ProductName").Caption("Ürün");
+        columns.Add().DataField("Quantity").Caption("Miktar");
+        columns.Add().DataField("ListPrice").Caption("Liste Fiyatı");
+        columns.Add().DataField("SalesPrice").Caption("Satış Fiyatı");
+        columns.Add().DataField("DiscountRate").Caption("İskonto %");
+        columns.Add().DataField("Amount").Caption("Tutar");
+        columns.Add().DataField("Date").Caption("Tarih").DataType(GridColumnDataType.Date);
+    })
+    .Paging(p => p.PageSize(15))
+    .SearchPanel(s => s.Visible(true))
+    .FilterRow(f => f.Visible(true))
+    .HeaderFilter(h => h.Visible(true))
+)

@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<h2>Ürün Listesi</h2>
+<a href="/Product/Create" class="btn btn-primary mb-3">+ Yeni Ürün</a>
+
+@(Html.DevExtreme().DataGrid<SalesManagement.ViewModels.ProductViewModel>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Product")
+        .LoadAction("GetProducts")
+        .Key("Id")
+    )
+    .Columns(columns => {
+        columns.Add().DataField("Id").Caption("ID").Width(60);
+        columns.Add().DataField("Name").Caption("Ürün Adı");
+        columns.Add().DataField("CategoryName").Caption("Kategori");
+        columns.Add().DataField("Salesprice").Caption("Fiyat").Format(f => f.Type(DevExtreme.AspNet.Mvc.Format.Currency));
+        columns.Add().DataField("ImageSrc").Caption("Resim");
+        columns.Add().Caption("İşlem").Width(100).CellTemplate(new JS(
+            "function(container, options) { $('<a>').text('Düzenle').addClass('btn btn-sm btn-warning').attr('href', '/Product/Edit/' + options.data.Id).appendTo(container); }"
+        ));
+    })
+    .Paging(p => p.PageSize(15))
+    .SearchPanel(s => s.Visible(true))
+    .FilterRow(f => f.Visible(true))
+    .HeaderFilter(h => h.Visible(true))
+)

@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "defaultProvider": "filesystem",
+  "libraries": [
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/js/dx.all.js",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/js",
+      "files": [ "dx.all.js" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/js/dx.aspnet.mvc.js",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/js",
+      "files": [ "dx.aspnet.mvc.js" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/js/dx.aspnet.data.js",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/js",
+      "files": [ "dx.aspnet.data.js" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/css/dx.common.css",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/css",
+      "files": [ "dx.common.css" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/css/dx.light.css",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/css",
+      "files": [ "dx.light.css" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/css/icons/dxicons.woff2",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/css/icons",
+      "files": [ "dxicons.woff2" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/css/icons/dxicons.woff",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/css/icons",
+      "files": [ "dxicons.woff" ]
+    },
+    {
+      "library": "https://cdn3.devexpress.com/jslib/25.2.5/css/icons/dxicons.ttf",
+      "provider": "filesystem",
+      "destination": "wwwroot/lib/devextreme/css/icons",
+      "files": [ "dxicons.ttf" ]
+    }
+  ]
+}

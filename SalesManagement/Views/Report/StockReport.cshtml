@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Stok Raporu";
+}
+
+<h2>Stok Raporu</h2>
+
+@(Html.DevExtreme().DataGrid<SalesManagement.ViewModels.StockReportViewModel>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Report")
+        .LoadAction("GetStockReport")
+        .Key("ProductId")
+    )
+    .Columns(columns => {
+        columns.Add().DataField("ProductName").Caption("Ürün");
+        columns.Add().DataField("CategoryName").Caption("Kategori");
+        columns.Add().DataField("TotalStock").Caption("Toplam Stok");
+    })
+    .Paging(p => p.PageSize(15))
+    .SearchPanel(s => s.Visible(true))
+    .FilterRow(f => f.Visible(true))
+    .HeaderFilter(h => h.Visible(true))
+)

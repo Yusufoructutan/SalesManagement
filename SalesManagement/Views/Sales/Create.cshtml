@@ -1,0 +1,100 @@
+﻿@model SalesManagement.Models.Sale
+
+@{
+    ViewData["Title"] = "Yeni Satış";
+}
+
+<h2>Yeni Satış Ekle</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Müşteri</label>
+                @Html.DropDownListFor(m => m.CustomerId, ViewBag.Customers as SelectList, "-- Seçiniz --", new { @class = "form-control" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ürün</label>
+                @Html.DropDownListFor(m => m.ProductId, ViewBag.Products as SelectList, "-- Seçiniz --", new { @class = "form-control", id = "productSelect" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Liste Fiyatı</label>
+                @Html.TextBoxFor(m => m.Listprice, new { @class = "form-control", id = "listPrice", @readonly = "readonly" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Satış Fiyatı</label>
+                @Html.TextBoxFor(m => m.Salesprice, new { @class = "form-control", id = "salesPrice" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">İskonto Oranı (%)</label>
+                @Html.TextBoxFor(m => m.Discountrate, new { @class = "form-control", id = "discountRate", @readonly = "readonly" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Miktar</label>
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", id = "quantity" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Toplam Tutar</label>
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", id = "amount", @readonly = "readonly" })
+            </div>
+
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a href="/Sales/Index" class="btn btn-secondary">Geri</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Ürün seçilince liste fiyatını otomatik doldur
+        $("#productSelect").change(function () {
+            var productId = $(this).val();
+            if (productId) {
+                $.getJSON("/Sales/GetProductPrice?productId=" + productId, function (data) {
+                    $("#listPrice").val(data.listPrice);
+                    hesapla();
+                });
+            } else {
+                $("#listPrice").val("");
+                $("#discountRate").val("");
+            }
+        });
+
+        // Satış fiyatı değişince iskonto oranını hesapla
+        $("#salesPrice").on("input", function () {
+            hesapla();
+        });
+
+        // Miktar değişince tutarı hesapla
+        $("#quantity").on("input", function () {
+            hesapla();
+        });
+
+        function hesapla() {
+            var listPrice = parseFloat($("#listPrice").val()) || 0;
+            var salesPrice = parseFloat($("#salesPrice").val()) || 0;
+            var quantity = parseFloat($("#quantity").val()) || 0;
+
+            // İskonto oranı: (Liste - Satış) / Liste * 100
+            if (listPrice > 0) {
+                var discountRate = ((listPrice - salesPrice) / listPrice * 100).toFixed(2);
+                $("#discountRate").val(discountRate);
+            }
+
+            // Toplam tutar
+            $("#amount").val((salesPrice * quantity).toFixed(2));
+        }
+    </script>
+}

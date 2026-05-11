@@ -1,0 +1,53 @@
+﻿@model SalesManagement.Models.Purchase
+
+@{
+    ViewData["Title"] = "Yeni Satın Alım";
+}
+
+<h2>Yeni Satın Alım Ekle</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Tedarikçi (Müşteri)</label>
+                @Html.DropDownListFor(m => m.CustomerId, ViewBag.Customers as SelectList, "-- Seçiniz --", new { @class = "form-control" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ürün</label>
+                @Html.DropDownListFor(m => m.ProductId, ViewBag.Products as SelectList, "-- Seçiniz --", new { @class = "form-control" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Alım Fiyatı</label>
+                @Html.TextBoxFor(m => m.Price, new { @class = "form-control", id = "price" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Miktar</label>
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", id = "quantity" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Toplam Tutar</label>
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", id = "amount", @readonly = "readonly" })
+            </div>
+
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a href="/Purchase/Index" class="btn btn-secondary">Geri</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Fiyat veya miktar değişince tutarı hesapla
+        $("#price, #quantity").on("input", function () {
+            var price = parseFloat($("#price").val()) || 0;
+            var quantity = parseFloat($("#quantity").val()) || 0;
+            $("#amount").val((price * quantity).toFixed(2));
+        });
+    </script>
+}
